@@ -16,13 +16,13 @@ IR_RX_PIN = 12 # Pin with the IR receiver
 BUTTON_PIN = 0 # Pin with the button
 
 # Set based on your assigned block ID:
-MY_BLOCK_ID = 0 # Block ID, get this see README.md for how to get one assigned (if you will be using around other devices)
+MY_BLOCK_ID = 22 # Block ID, get this see README.md for how to get one assigned (if you will be using around other devices)
 
 # Set different for each device/player:
-MY_DEVICE_ID = 0 # Device ID, this should be unique for each device if you want to keep track of hits by specific player or something
+MY_DEVICE_ID = 241 # Device ID, this should be unique for each device if you want to keep track of hits by specific player or something
 
 # Set to desired color:
-MY_COLOR = "Red" # See packet_utils.py for available colors
+MY_COLOR = "Green" # See packet_utils.py for available colors
 
 ################
 FIRE_RATE_LIMIT_MS = 1000 # milliseconds

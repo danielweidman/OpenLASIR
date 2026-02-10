@@ -240,9 +240,11 @@ As assignments are made, the table above will be updated to project creators can
 
 ## Code Examples
 
-### Encoding and Decoding Packets
+### MicroPython
 
-The `openlasir_utils.py` module handles packet encoding and decoding, separate from the actual reception and tranmission (it can convert between address+command and packet type/meaning/device identification/data)
+#### Encoding and Decoding Packets
+
+The `micropython/openlasir_utils.py` module handles packet encoding and decoding, separate from the actual reception and tranmission (it can convert between address+command and packet type/meaning/device identification/data)
 
 **Encoding a laser tag fire packet:**
 
@@ -321,7 +323,7 @@ COLOR_NUM_TO_RGB[4]   # (255, 0, 0)
 COLOR_NUM_TO_NAME[6]  # 'Orange'
 ```
 
-### Using the IR Transmitter and Receiver (MicroPython)
+#### Using the IR Transmitter and Receiver (MicroPython)
 
 On a MicroPython board (ESP32, RP2040, Pyboard, etc.), the `ir_tx` and `ir_rx` modules handle physical IR transmission and reception. These are based on [micropython_ir](https://github.com/peterhinch/micropython_ir) by Peter Hinch, with new classes created for OpenLASIR.
 
@@ -375,9 +377,9 @@ while ir_transmitter.busy():
 ir_listener = OpenLASIR_RX(Pin(12, Pin.IN), on_receive)
 ```
 
-### Full Laser Tag Game Example
+#### Full Laser Tag Game Example (MicroPython)
 
-The [`examples/lasertag/main.py`](examples/lasertag/main.py) file contains a complete minimal laser tag implementation, including:
+The [`examples/micropython/lasertag/main.py`](examples/micropython/lasertag/main.py) file contains a complete minimal laser tag implementation, including:
 
 - Button-triggered firing with rate limiting (1 shot/second)
 - Hit detection with attacker color display
@@ -402,23 +404,176 @@ To run the example:
 3. Set `MY_BLOCK_ID`, `MY_DEVICE_ID`, and `MY_COLOR`.
 4. Run on two or more boards.
 
+### Arduino / C++
+
+Arduino support uses a [fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote) that adds native OpenLASIR protocol support, plus a header-only utility library (`arduino/OpenLASIR_Utils.h`) that mirrors the MicroPython `openlasir_utils.py` module.
+
+#### Setup
+
+1. Install the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote) as your IR library.
+2. Include `OpenLASIR_Utils.h` from the `arduino/` folder in this repository (copy it into your project or Arduino libraries folder).
+
+#### Encoding and Decoding Packets
+
+The `OpenLASIR_Utils.h` header provides encoding, decoding, and lookup functions.
+
+**Encoding a laser tag fire packet:**
+
+```cpp
+#include "OpenLASIR_Utils.h"
+
+uint8_t  address;
+uint16_t command;
+OpenLASIR_encodeLaserTagFire(0, 42, OPENLASIR_COLOR_RED, address, command);
+// address = 0x00 (Block ID 0)
+// command = 0x802A
+//   Device ID 42 = 0x2A in bits 0-7
+//   Mode 0 (laser_tag_fire) in bits 8-12
+//   Color 4 (Red) = 0b100 in bits 13-15
+```
+
+**Decoding a laser tag fire packet:**
+
+```cpp
+OpenLASIR_Packet pkt;
+if (OpenLASIR_decodeLaserTagFire(address, command, pkt)) {
+    Serial.print("Block ID: ");  Serial.println(pkt.blockId);
+    Serial.print("Device ID: "); Serial.println(pkt.deviceId);
+    Serial.print("Color: ");     Serial.println(OpenLASIR_getColorName(pkt.data));
+    // Block ID: 0, Device ID: 42, Color: Red
+}
+```
+
+**Encoding and decoding a general packet (any mode):**
+
+```cpp
+uint8_t  address;
+uint16_t command;
+
+// Encode a user presence announcement with data=2 (Yellow)
+OpenLASIR_encodeGeneralPacket(34, 7,
+    OPENLASIR_MODE_USER_PRESENCE_ANNOUNCEMENT, OPENLASIR_COLOR_YELLOW,
+    address, command);
+
+// Decode
+OpenLASIR_Packet pkt = OpenLASIR_decodeGeneralPacket(address, command);
+Serial.print("Block: ");   Serial.print(pkt.blockId);
+Serial.print(" Device: ");  Serial.print(pkt.deviceId);
+Serial.print(" Mode: ");    Serial.print(OpenLASIR_getModeName(pkt.mode));
+Serial.print(" Data: ");    Serial.println(pkt.data);
+// Block: 34, Device: 7, Mode: user_presence_announcement, Data: 2
+```
+
+**Color lookup utilities:**
+
+```cpp
+OpenLASIR_getColorName(4);          // "Red"
+OpenLASIR_getModeName(0);           // "laser_tag_fire"
+
+uint8_t r, g, b;
+OpenLASIR_getColorRGB(4, r, g, b);  // r=255, g=0, b=0
+```
+
+#### Using the IR Transmitter and Receiver (Arduino)
+
+IR transmission and reception uses the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote). Enable the OpenLASIR decoder by defining `DECODE_OPENLASIR` before including the library.
+
+**Sending a laser tag fire packet:**
+
+```cpp
+#define DECODE_OPENLASIR
+#include <IRremote.hpp>
+#include "OpenLASIR_Utils.h"
+
+uint8_t  address;
+uint16_t command;
+OpenLASIR_encodeLaserTagFire(0, 1, OPENLASIR_COLOR_RED, address, command);
+
+IrSender.sendOpenLASIR(address, command, 0);  // 0 repeats
+```
+
+**Receiving and decoding:**
+
+```cpp
+#define DECODE_OPENLASIR
+#include <IRremote.hpp>
+#include "OpenLASIR_Utils.h"
+
+void setup() {
+    Serial.begin(115200);
+    IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
+}
+
+void loop() {
+    if (IrReceiver.decode()) {
+        if (IrReceiver.decodedIRData.protocol == OPENLASIR) {
+            OpenLASIR_Packet pkt = OpenLASIR_decodeGeneralPacket(
+                IrReceiver.decodedIRData.address,
+                IrReceiver.decodedIRData.command);
+
+            Serial.print("Block: ");  Serial.print(pkt.blockId);
+            Serial.print(" Device: "); Serial.print(pkt.deviceId);
+            Serial.print(" Mode: ");   Serial.println(OpenLASIR_getModeName(pkt.mode));
+
+            if (pkt.mode == OPENLASIR_MODE_LASER_TAG_FIRE) {
+                Serial.print("  Tagged with color: ");
+                Serial.println(OpenLASIR_getColorName(pkt.data));
+            }
+        }
+        IrReceiver.resume();
+    }
+}
+```
+
+**Transmit/receive on the same device:** Stop the receiver before transmitting to prevent it from picking up the outgoing signal, then restart it:
+
+```cpp
+IrReceiver.stop();
+IrSender.sendOpenLASIR(address, command, 0);
+IrReceiver.start();  // Must use start(), not restartAfterSend()
+```
+
+#### Full Laser Tag Game Example (Arduino)
+
+The [`examples/arduino/lasertag/lasertag.ino`](examples/arduino/lasertag/lasertag.ino) file contains a complete minimal laser tag implementation for Arduino, including:
+
+- Button-triggered firing with rate limiting (1 shot/second)
+- Hit detection with attacker color display
+- 2-second disable period after being tagged
+- Receiver stop/start around transmissions
+- Platform-aware pin defaults for ESP32, RP2040, and AVR
+
+To run the example:
+1. Install the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote).
+2. Open `examples/arduino/lasertag/lasertag.ino` in the Arduino IDE.
+3. Set the pin numbers to match your hardware.
+4. Set `MY_BLOCK_ID`, `MY_DEVICE_ID`, and `MY_COLOR`.
+5. Upload to two or more boards and play!
+
 ---
 
 ## Repository Structure
 
 ```
-open_laser_tag_protocol/
-├── README.md                  # This document
-├── openlasir_utils.py         # Packet encoding/decoding
-├── ir_tx/
-│   ├── __init__.py            # IR transmitter base class (from micropython_ir)
-│   └── openlasir.py           # OpenLASIR transmitter implementation
-├── ir_rx/
-│   ├── __init__.py            # IR receiver base class (from micropython_ir)
-│   └── openlasir.py           # OpenLASIR receiver/decoder implementation
+OpenLASIR/
+├── README.md                       # This document
+├── micropython/
+│   ├── openlasir_utils.py          # Packet encoding/decoding (MicroPython)
+│   ├── ir_tx/
+│   │   ├── __init__.py             # IR transmitter base class (from micropython_ir)
+│   │   └── openlasir.py            # OpenLASIR transmitter implementation
+│   └── ir_rx/
+│       ├── __init__.py             # IR receiver base class (from micropython_ir)
+│       └── openlasir.py            # OpenLASIR receiver/decoder implementation
+├── arduino/
+│   └── OpenLASIR_Utils.h           # Packet encoding/decoding (Arduino/C++)
 └── examples/
-    └── lasertag/
-        └── main.py            # Minimal laser tag game example
+    ├── micropython/
+    │   └── lasertag/
+    │       └── main.py             # Minimal laser tag game (MicroPython)
+    └── arduino/
+        └── lasertag/
+            └── lasertag.ino        # Minimal laser tag game (Arduino)
 ```
 
 ---
