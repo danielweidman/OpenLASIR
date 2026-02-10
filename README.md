@@ -1,6 +1,6 @@
-# OpenLASIR - Open Lasertag And Stuff IR Protocol
+# Open Lasertag And Stuff InfraRed protocol (OpenLASIR)
 
-OpenLASIR is an communication standard for DEFCON-style electronic badges. If anyone actually adopts it, it should allow badge creators to make devices compatible with one another. It defines packet types for a laser tag game, user and base station presence announcement, handshakes between users and base stations, and color setting commands.
+OpenLASIR is an communication standard for DEFCON-style electronic badges. If anyone actually adopts it, it might allow badge creators to make devices compatible with one another. It defines packet types for a laser tag game, user and base station presence announcement, handshakes between users and base stations, and color setting commands.
 
 The official [Laser\* Tag Badge](https://dani.pink/lasertag) for 2026 (and 2025 badges via a firmware update) will support OpenLASIR (as well as a separate proprietary protocol) for the lasertag-related features. If there is interest from other creators, it might also be updated to support the other functionalities described here.
 
