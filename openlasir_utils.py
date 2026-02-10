@@ -39,6 +39,7 @@ MODE_NUM_TO_NAME = {
     8: "base_station_to_user_handshake_response",
     9: "color_set_temporary",
     10: "color_set_permanent",
+    11: "general_interact",
     # ...31: potential future use
 }
 NAME_TO_MODE_NUM = {v: k for k, v in MODE_NUM_TO_NAME.items()}

@@ -62,7 +62,8 @@ This table defines specific packet types/modes that are defined by the standard.
 | 8 | `base_station_to_user_handshake_response` | User badge responds to a base-station-initiated handshake. |
 | 9 | `color_set_temporary` | Tell a badge to display a color temporarily. |
 | 10 | `color_set_permanent` | Tell a badge to display a color and "remember" it according to some device-specific logic. |
-| 11-31 | *(reserved)* | Reserved for future use. Let me know if you have some ideas that would fit with the rest of the packet structure. |
+| 11 | `general_interact` | Tell a device to execute a general "interact" action. The specific behavior is defined by the receiver. |
+| 12-31 | *(reserved)* | Reserved for future use. Let me know if you have some ideas that would fit with the rest of the packet structure. |
 
 
 ### Colors
@@ -121,6 +122,14 @@ Tell another badge to change its LED color.
 - **`color_set_temporary` (Mode 9):** Request a device to display a color for a short period.
 - **`color_set_permanent` (Mode 10):** Request a device to display a color for a longer period/until otherwise ordered.
 
+### `general_interact` (Mode 11)
+
+A general-purpose "interact with this device" packet. It tells the receiver to do so "something", like how an "interact with object" button in a video game. What *something* means depends entirely on the receiving device. This is intentionally open-ended.
+
+The 3-bit data field is available for device-defined use (e.g. to select between different interaction types on the same device).
+
+Must be human-triggered (e.g. a button press).
+
 ---
 
 ## Base Stations
@@ -157,6 +166,7 @@ In order to be officially compliant with OpenLASIR, please respect these rules a
 | `base_station_to_user_handshake_initiation` | Manual or automatic | 10/min | 3/min |
 | `user_to_user_handshake_initiation` | Manual | 1/sec, 30/min | 3/min |
 | `user_to_base_station_handshake_initiation` | Manual | 1/sec, 30/min | 3/min |
+| `general_interact` | Manual | 1/sec, 30/min | 3/min |
 | `*_response` packets | In response to initiation only | -- | -- |
 
 **Response packets** (`user_to_user_handshake_response`, `user_to_base_station_handshake_response`, `base_station_to_user_handshake_response`) should only be sent in direct response to receiving the corresponding initiation packet.
