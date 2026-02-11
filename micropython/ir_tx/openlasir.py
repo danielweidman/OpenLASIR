@@ -4,6 +4,9 @@
 
 # Based on NEC encoder by Peter Hinch (MIT license)
 
+# Intended to be used with ir_tx/__init__.py from https://github.com/peterhinch/micropython_ir
+# (__init__.py is also reproduced in this directory for convenience of running example code)
+
 from micropython import const
 from ir_tx import IR, STOP
 

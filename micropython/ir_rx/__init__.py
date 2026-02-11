@@ -4,6 +4,8 @@
 # Author: Peter Hinch
 # Copyright Peter Hinch 2020-2024 Released under the MIT license
 
+# Originally from: https://github.com/peterhinch/micropython_ir
+
 # Thanks are due to @Pax-IT for diagnosing a problem with ESP32C3.
 
 from machine import Timer, Pin

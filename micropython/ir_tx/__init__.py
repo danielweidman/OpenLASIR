@@ -4,6 +4,9 @@
 # Released under the MIT License (MIT). See LICENSE.
 
 # Copyright (c) 2020-2021 Peter Hinch
+
+# Originally from: https://github.com/peterhinch/micropython_ir
+
 from sys import platform
 ESP32 = platform == 'esp32'  # Loboris not supported owing to RMT
 RP2 = platform == 'rp2'

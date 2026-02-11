@@ -4,6 +4,9 @@
 
 # Based on NEC decoder by Peter Hinch (MIT license)
 
+# Intended to be used with ir_rx/__init__.py from https://github.com/peterhinch/micropython_ir
+# (__init__.py is also reproduced in this directory for convenience of running example code)
+
 from utime import ticks_us, ticks_diff
 from ir_rx import IR_RX
 
