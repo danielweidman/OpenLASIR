@@ -2,7 +2,7 @@
 
 OpenLASIR is an communication standard for DEFCON-style electronic badges. If anyone actually adopts it, it might allow badge creators to make devices compatible with one another. It defines packet types for a laser tag game, user and base station presence announcement, handshakes between users and base stations, and color setting commands.
 
-The official [Laser\* Tag Badge](https://dani.pink/lasertag) for 2026 (and 2025 badges via a firmware update) will support OpenLASIR (as well as a separate proprietary protocol) for the lasertag-related features. If there is interest from other creators, it might also be updated to support the other functionalities described here.
+The first-party [Laser\* Tag Badge](https://dani.pink/lasertag) for 2026 (and 2025 badges via a firmware update) will support OpenLASIR (as well as a separate proprietary protocol) for the lasertag-related features. If there is interest from other creators, it might also be updated to support the other functionalities described here.
 
 ---
 
@@ -91,7 +91,7 @@ Indicates firing a laser tag shot.
 
 The **data** field carries the shooter's color, so the tagged badge knows what color hit it (so it can display that color momentarily).
 
-The official [Laser\* Tag Badge](https://dani.pink/lasertag) will support this protocol. If you just want to make your device compatible with Laser* Tag Badge, this is the only packet type you need to support.
+The first-party [Laser\* Tag Badge](https://dani.pink/lasertag) will support this protocol. If you just want to make your device compatible with Laser* Tag Badge, this is the only packet type you need to support.
 
 ### Presence Announcements (Modes 1-2)
 
@@ -143,7 +143,7 @@ The concept of a base station in OpenLASIR is *not* related to the concept of a 
 
 ## Rules and Rate Limits
 
-In order to be officially compliant with OpenLASIR, please respect these rules and rate limits. IR transmissions are slow and all (for this protocol at least) done at the same 940nm wavelength, so it is easy for devices to interfere with each other if they are constantly transmitting. 
+In order to be compliant with OpenLASIR, please respect these rules and rate limits. IR transmissions are slow and all (for this protocol at least) done at the same 940nm wavelength, so it is easy for devices to interfere with each other if they are constantly transmitting. 
 
 ### Laser Tag Rules
 
@@ -201,14 +201,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | 3 | One-Offs | *to be assigned* |
 | 4 | One-Offs | *to be assigned* |
 | 5 | One-Offs | *to be assigned* |
-| 6 | Laser\* Tag Badge (Official) | *various* |
-| 7 | Laser\* Tag Badge (Official) | *various* |
-| 8 | Laser\* Tag Badge (Official) | *various* |
-| 9 | Laser\* Tag Badge (Official) | *various* |
-| 10 | Laser\* Tag Badge (Official) | *various* |
-| 11 | Laser\* Tag Badge (Official) | *various* |
-| 12 | Laser\* Tag Badge (Official) | *various* |
-| 13-31 | Laser\* Tag Badge (Official, Reserved) | *various* |
+| 6-31 | Laser\* Tag Badge (Official) | *various* |
 | 32 | Shared / Flipper Zero | *various* |
 | 33 | Shared / Misc Tools | *to be assigned* |
 | 34 | Shared / Misc Base Stations | *to be assigned* |
@@ -406,11 +399,13 @@ To run the example:
 
 ### Arduino / C++
 
-Arduino support uses a [fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote) that adds native OpenLASIR protocol support, plus a header-only utility library (`arduino/OpenLASIR_Utils.h`) that mirrors the MicroPython `openlasir_utils.py` module.
+Arduino support uses [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) with OpenLASIR protocol support, plus a header-only utility library (`arduino/OpenLASIR_Utils.h`) that mirrors the MicroPython `openlasir_utils.py` module.
+
+NOTE: As of 2-10-2026, the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote)  library has merged in OpenLASIR support, but a new build with it hasn't been released tothe Arduino Library Manager yet. So you may need to download the latestv ersion from the [repo](https://github.com/Arduino-IRremote/Arduino-IRremote)  and install it manually if the latest release is still v4.5.0 at the time of reading.
 
 #### Setup
 
-1. Install the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote) as your IR library.
+1. Install the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library (see NOTE above).
 2. Include `OpenLASIR_Utils.h` from the `arduino/` folder in this repository (copy it into your project or Arduino libraries folder).
 
 #### Encoding and Decoding Packets
@@ -476,7 +471,7 @@ OpenLASIR_getColorRGB(4, r, g, b);  // r=255, g=0, b=0
 
 #### Using the IR Transmitter and Receiver (Arduino)
 
-IR transmission and reception uses the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote). Enable the OpenLASIR decoder by defining `DECODE_OPENLASIR` before including the library.
+IR transmission and reception uses the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library. Enable the OpenLASIR decoder by defining `DECODE_OPENLASIR` before including the library.
 
 **Sending a laser tag fire packet:**
 
@@ -544,7 +539,7 @@ The [`examples/arduino/lasertag/lasertag.ino`](examples/arduino/lasertag/laserta
 - Platform-aware pin defaults for ESP32, RP2040, and AVR
 
 To run the example:
-1. Install the [OpenLASIR fork of Arduino-IRremote](https://github.com/danielweidman/Arduino-IRremote).
+1. Install the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library.
 2. Open `examples/arduino/lasertag/lasertag.ino` in the Arduino IDE.
 3. Set the pin numbers to match your hardware.
 4. Set `MY_BLOCK_ID`, `MY_DEVICE_ID`, and `MY_COLOR`.
@@ -582,7 +577,9 @@ OpenLASIR/
 
 **Protocol design and `openlasir_utils.py`:** Dani Weidman ([github.com/danielweidman](https://github.com/danielweidman), [dani.pink](https://dani.pink))
 
-**IR transmitter and receiver modules (`ir_tx/`, `ir_rx/`):** Based on [micropython_ir](https://github.com/peterhinch/micropython_ir) by Peter Hinch, modified to implement the OpenLASIR protocol. The original library supports NEC, Sony, Philips RC-5/RC-6, and other IR protocols for MicroPython.
+**MicoPython IR transmitter and receiver modules (`ir_tx/`, `ir_rx/`):** Based on [micropython_ir](https://github.com/peterhinch/micropython_ir) by Peter Hinch, modified to implement the OpenLASIR protocol. The original library supports NEC, Sony, Philips RC-5/RC-6, and other IR protocols for MicroPython.
+
+**Arduino IR transmitter and receiver modules:** Uses [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library (which now contains native OpenLASIR support).
 
 ---
 

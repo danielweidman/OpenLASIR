@@ -23,7 +23,8 @@
  *   1. Set the pin numbers below to match your wiring
  *   2. Set MY_BLOCK_ID and MY_DEVICE_ID (see OpenLASIR README for allocation)
  *   3. Set MY_COLOR to your desired color
- *   4. Upload to two or more boards and play!
+ *   4. Upload to two or more boards and play*! 
+ *   (*all it does it print the hits to the serial monitor, so not that exciting...)
  *
  ************************************************************************************
  * MIT License — see OpenLASIR repository for full license text.
@@ -57,10 +58,17 @@
 #define FIRE_BUTTON_PIN   4
 #endif
 
-#include <IRremote.hpp> // Arduino-IRremote library with OpenLASIR support: 
+// Arduino-IRremote library with OpenLASIR support. As of 2-10-2026, the
+// https://github.com/Arduino-IRremote/Arduino-IRremote library has merged
+// in OpenLASIR support, but a new build with it hasn't been released to
+// the Arduino Library Manager yet. So you may need to download the latest
+// version from the GitHub repository and install it manually if the latest
+// release is still v4.5.0.
+#include <IRremote.hpp>
 
 // Path is relative — adjust if your folder layout differs.
-// If you installed OpenLASIR_Utils.h to your Arduino libraries folder, you can
+// If you installed OpenLASIR_Utils.h to your Arduino libraries 
+// folder, or you have it in the same folder as this sketch, you can
 // change this to: #include <OpenLASIR_Utils.h>
 #include "../../../arduino/OpenLASIR_Utils.h"
 
