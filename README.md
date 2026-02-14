@@ -8,6 +8,8 @@ The first-party [Laser\* Tag Badge](https://dani.pink/lasertag) for 2026 (and 20
 
 ## The IR Layer: Modified NEC Extended Protocol
 
+*You can skip this part if you just want to build with Arduino or MicroPython; see Example Code further down*
+
 OpenLASIR is based on the [NEC IR protocol](https://www.sbprojects.net/knowledge/ir/nec.php), but with the address and command roles rearranged. This is done in order to prevent interference with other devices.
 
 ### Comparison to Standard NEC / NEC Extended
