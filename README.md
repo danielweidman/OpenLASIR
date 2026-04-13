@@ -404,8 +404,6 @@ To run the example:
 
 Arduino support uses [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) with OpenLASIR protocol support, plus a header-only utility library (`arduino/OpenLASIR_Utils.h`) that mirrors the MicroPython `openlasir_utils.py` module.
 
-NOTE: As of 2-10-2026, the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote)  library has merged in OpenLASIR support, but a new build with it hasn't been released tothe Arduino Library Manager yet. So you may need to download the latestv ersion from the [repo](https://github.com/Arduino-IRremote/Arduino-IRremote)  and install it manually if the latest release is still v4.5.0 at the time of reading.
-
 #### Setup
 
 1. Install the [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library (see NOTE above).
@@ -582,7 +580,7 @@ OpenLASIR/
 
 **MicoPython IR transmitter and receiver modules (`ir_tx/`, `ir_rx/`):** Based on [micropython_ir](https://github.com/peterhinch/micropython_ir) by Peter Hinch, modified to implement the OpenLASIR protocol. The original library supports NEC, Sony, Philips RC-5/RC-6, and other IR protocols for MicroPython.
 
-**Arduino IR transmitter and receiver modules:** Uses [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library (which now contains native OpenLASIR support).
+**Arduino IR transmitter and receiver modules:** Uses [Arduino-IRremote](https://github.com/Arduino-IRremote/Arduino-IRremote) library (which contains native OpenLASIR support).
 
 ---
 
