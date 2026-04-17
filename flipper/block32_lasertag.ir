@@ -1,0 +1,105 @@
+Filetype: IR signals file
+Version: 1
+#
+# OpenLASIR — Block ID 32 (Shared / Flipper Zero). 38 kHz, NECext-compatible frame.
+# Address = block_id | (~block_id << 8); command = device_id | (mode << 8) | (data << 13).
+# laser_tag_fire: mode 0; device_id and color data both match team index 0=Cyan .. 7=White.
+# BLINK_*: color_set_temporary (mode 9), same device/color mapping.
+#
+# https://github.com/danielweidman/OpenLASIR
+#
+name: FIRE_CYAN
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 00 00 00 00
+#
+name: FIRE_MAGENTA
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 01 20 00 00
+#
+name: FIRE_YELLOW
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 02 40 00 00
+#
+name: FIRE_GREEN
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 03 60 00 00
+#
+name: FIRE_RED
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 04 80 00 00
+#
+name: FIRE_BLUE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 05 A0 00 00
+#
+name: FIRE_ORANGE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 06 C0 00 00
+#
+name: FIRE_WHITE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 07 E0 00 00
+#
+name: BLINK_CYAN
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 00 09 00 00
+#
+name: BLINK_MAGENTA
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 01 29 00 00
+#
+name: BLINK_YELLOW
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 02 49 00 00
+#
+name: BLINK_GREEN
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 03 69 00 00
+#
+name: BLINK_RED
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 04 89 00 00
+#
+name: BLINK_BLUE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 05 A9 00 00
+#
+name: BLINK_ORANGE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 06 C9 00 00
+#
+name: BLINK_WHITE
+type: parsed
+protocol: NECext
+address: 20 DF 00 00
+command: 07 E9 00 00
