@@ -2,7 +2,7 @@
 
 OpenLASIR is an communication standard for DEFCON-style electronic badges. If anyone actually adopts it, it might allow badge creators to make devices compatible with one another. It defines packet types for a laser tag game, user and base station presence announcement, handshakes between users and base stations, and color setting commands.
 
-The first-party [Laser\* Tag Badge](https://dani.pink/lasertag) for 2026 (and 2025 badges via a firmware update) will support OpenLASIR (as well as a separate proprietary protocol) for the lasertag-related features. If there is interest from other creators, it might also be updated to support the other functionalities described here.
+The first-party [Laser\* Tag Badge DS](https://dani.pink/lasertag) for 2026 (and 2025 badges via a firmware update) will support OpenLASIR (as well as a separate proprietary protocol) for the lasertag-related features. If there is interest from other creators, it might also be updated to support the other functionalities described here. OpenLASIR is also supported on the offical DEF CON Singapore 1 conference badge!
 
 ---
 
@@ -197,7 +197,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 
 | Block ID | Block Name | Devices |
 |----------|-----------|---------|
-| 0 | Free-for-all! | *Lazy or mysterious anonymous people can use any device ID in this block without reservation, but devices won't be properly identified and laser tag scoring won't count for leaderboard* |
+| 0 | Free-for-all! | *Antisocial or mysterious anonymous people can use any device ID in this block without reservation, but devices won't be properly identified and laser tag scoring won't count for leaderboard* |
 | 1 | One-Offs | 0: TamaBadge<br>1: irBot<br>2: Array BlastIR |
 | 2 | One-Offs | *to be assigned* |
 | 3 | One-Offs | *to be assigned* |
@@ -207,7 +207,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | 32 | Shared / Flipper Zero | *various* |
 | 33 | Shared / Misc Tools | *to be assigned* |
 | 34 | Shared / Misc Base Stations | *to be assigned* |
-| 35-64 | Secret large scale project :) | -- |
+| 35-64 | DEF CON Singapore Official Badge | -- |
 | 35-255 | *(Unassigned)* | -- |
 
 As assignments are made, the table above will be updated to project creators can appropriately attribute individual IR interactions to specific projects/devices.
