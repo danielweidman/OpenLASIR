@@ -208,7 +208,9 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | 33 | Shared / Misc Tools | *to be assigned* |
 | 34 | Shared / Misc Base Stations | *to be assigned* |
 | 35-64 | DEF CON Singapore Official Badge | -- |
-| 35-255 | *(Unassigned)* | -- |
+| 65 | OTS Crew Badge | -- |
+| 66-255 | *(Unassigned)* | -- |
+
 
 As assignments are made, the table above will be updated to project creators can appropriately attribute individual IR interactions to specific projects/devices.
 
