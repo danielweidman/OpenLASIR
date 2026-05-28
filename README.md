@@ -6,13 +6,34 @@ The first-party [Laser\* Tag Badge DS](https://dani.pink/lasertag) for 2026 (and
 
 ---
 
-## The IR Layer: Modified NEC Extended Protocol
+## The IR Layer (NEC-inspired for compatibility)
 
 *You can skip this part if you just want to build with Arduino or MicroPython; see Example Code further down*
 
-OpenLASIR is based on the [NEC IR protocol](https://www.sbprojects.net/knowledge/ir/nec.php), but with the address and command roles rearranged. This is done in order to prevent interference with other devices.
+Each OpenLASIR packet is a 32-bit frame sent over a 38 kHz IR carrier. The timing and carrier are borrowed from the [NEC IR protocol](https://www.sbprojects.net/knowledge/ir/nec.php), so existing NEC-capable hardware and libraries can send and receive OpenLASIR frames. Apart from that timing and carrier, OpenLASIR defines its own packet structure.
 
-### Comparison to Standard NEC / NEC Extended
+### Packet Structure
+
+```
+  Bits  0-7:   Block ID              (8 bits)
+  Bits  8-15:  ~Block ID             (8 bits)  ← inverted copy of Block ID, used as an error check
+  Bits 16-23:  Device ID             (8 bits)
+  Bits 24-28:  Mode                  (5 bits)
+  Bits 29-31:  Data (color, etc.)    (3 bits)
+```
+
+In plain terms:
+
+- The **first byte** is the **Block ID**.
+- The **second byte** is an inverted copy of the Block ID, used only as an error check.
+- The **third byte** is the **Device ID**.
+- The **fourth byte** holds the **Mode** (5 bits) and the **Data** (3 bits, e.g. color).
+
+The included Python sample code groups these fields into an "address" and a "command" for compatibility with NEC libraries: the "address" is the Block ID (with its inverted error-check byte), and the "command" holds the Device ID, Mode, and Data.
+
+### Relationship to NEC (optional)
+
+You only need this section if you're mapping OpenLASIR onto an existing NEC library. The only things OpenLASIR shares with NEC are the carrier frequency, bit timing, and packet size:
 
 | Feature | Standard NEC | NEC Extended | **OpenLASIR** |
 |---|---|---|---|
@@ -29,21 +50,7 @@ OpenLASIR is based on the [NEC IR protocol](https://www.sbprojects.net/knowledge
 | "0" space | 562.5 us | 562.5 us | **562.5 us** |
 | Stop bit | 562.5 us mark | 562.5 us mark | **562.5 us mark** |
 
-**The key difference:** Standard NEC puts the error check on the command; NEC Extended removes the address error check to get 16 address bits. OpenLASIR does the opposite; it keeps the address error check (giving 8 validated address bits) and removes the command error check (giving 16 command bits). This is to prevent OpenLASIR packets from causing issues with NEC devices (except in very rare cases of collisions).
-
-### Bit-by-Bit Breakdown
-
-
-```
-  Bits  0-7:   Block ID              (8 bits)  ← Address low byte
-  Bits  8-15:  ~Block ID             (8 bits)  ← Address high byte (inverted, for error check)
-  Bits 16-23:  Device ID             (8 bits)  ← Command bits 0-7
-  Bits 24-28:  Mode                  (5 bits)  ← Command bits 8-12
-  Bits 29-31:  Data (color, etc.)    (3 bits)  ← Command bits 13-15
-```
----
-
-The included Python sample code converts the packet data into "address" and "command", for the sake of familiarity with the NEC protocol (and libraries that implement it). "Address" actually is the Block ID, and "command" contains Device ID, Mode, and Data (as shown above).
+Standard NEC puts an error-check byte on the command; NEC Extended drops the address error check to get 16 address bits. OpenLASIR keeps the inverted Block ID byte as an error check (like the NEC address byte) but uses the remaining two bytes freely for Device ID, Mode, and Data. Keeping that inverted Block ID byte is what lets OpenLASIR avoid interfering with NEC devices (except in very rare collisions).
 
 ### Packet Types
 
