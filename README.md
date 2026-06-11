@@ -211,7 +211,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | 4 | One-Offs | *to be assigned* |
 | 5 | One-Offs | *to be assigned* |
 | 6-31 | Laser\* Tag Badge (Official) | *various* |
-| 32 | Shared / Flipper Zero | *various* |
+| 32 | Shared / Assigned IR Files | *various* |
 | 33 | Shared / Misc Tools | *to be assigned* |
 | 34 | Shared / Misc Base Stations | *to be assigned* |
 | 35-64 | DEF CON Singapore Official Badge | -- |
