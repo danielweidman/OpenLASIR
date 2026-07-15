@@ -211,7 +211,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | 4 | One-Offs | *to be assigned* |
 | 5 | One-Offs | *to be assigned* |
 | 6-31 | Laser\* Tag Badge (Official) | *various* |
-| 32 | Shared / Assigned IR Files | 0: Flipper0<br>1: irBot |
+| 32 | Shared / Assigned IR Files | 0: CyanDolphin<br>1: MagDolphin<br>2: YelloDolphin<br>3: GreenDolphin<br>4: RedDolphin<br>5: BlueDolphin<br>6: OrangDolphib<br>7: WhiteDolphin<br>8: MrUnicorn |
 | 33 | Shared / Misc Tools | *to be assigned* |
 | 34 | Shared / Misc Base Stations | *to be assigned* |
 | 35-64 | DEF CON Singapore Official Badge | -- |
