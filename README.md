@@ -205,7 +205,7 @@ Assigned Block IDs and Device IDs are tracked in the table below. "Free Use" blo
 | Block ID | Block Name | Devices |
 |----------|-----------|---------|
 | 0 | Free-for-all! | *Antisocial or mysterious anonymous people can use any device ID in this block without reservation, but devices won't be properly identified and laser tag scoring won't count for leaderboard* |
-| 1 | One-Offs | 0: TamaBadge<br>1: irBot<br>2: Array BlastIR<br>3: Mj0ln1r by Viking<br>4: LaserBag by blorfus |
+| 1 | One-Offs | 0: TamaBadge<br>1: irBot<br>2: Array BlastIR<br>3: Mj0ln1r by Viking<br>4: LaserBag by blorfus<br>5: TankThing by Caligo<br>6: RedGuy by RedGuy<br>6: RedGuy<br>7: NeedNotApply|
 | 2 | One-Offs | *to be assigned* |
 | 3 | One-Offs | *to be assigned* |
 | 4 | One-Offs | *to be assigned* |
